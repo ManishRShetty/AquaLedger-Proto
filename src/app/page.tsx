@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useContext } from "react";
@@ -15,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { CatchContext } from "@/context/CatchContext";
 import { Fish, MapPin, PlusCircle, ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const context = useContext(CatchContext);
@@ -27,7 +29,7 @@ export default function Dashboard() {
 
   const { catches } = context;
 
-  const getScoreColor = (score: number) => {
+  const getScoreColorClass = (score: number) => {
     if (score >= 75) return "bg-green-500";
     if (score >= 50) return "bg-yellow-500";
     return "bg-red-500";
@@ -102,7 +104,7 @@ export default function Dashboard() {
                       <p className="text-sm font-medium text-muted-foreground mb-1">
                         Sustainability Score: {c.score}/100
                       </p>
-                      <Progress value={c.score} className="h-2 [&>div]:bg-primary" />
+                      <Progress value={c.score} className="h-2" indicatorClassName={getScoreColorClass(c.score)} />
                     </div>
                     <p className="text-sm text-muted-foreground line-clamp-2">
                       {c.rationale}

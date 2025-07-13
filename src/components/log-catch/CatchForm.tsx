@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useContext } from "react";
@@ -99,6 +100,12 @@ export function CatchForm() {
     if (score >= 75) return "text-green-500";
     if (score >= 50) return "text-yellow-500";
     return "text-red-500";
+  };
+  
+  const getScoreColorClass = (score: number) => {
+    if (score >= 75) return "bg-green-500";
+    if (score >= 50) return "bg-yellow-500";
+    return "bg-red-500";
   };
 
 
@@ -225,7 +232,7 @@ export function CatchForm() {
                  <p className={cn("text-7xl font-bold", getScoreColor(result.score))}>{result.score}</p>
                  <p className="text-muted-foreground">out of 100</p>
               </div>
-              <Progress value={result.score} className="h-3 [&>div]:bg-primary"/>
+              <Progress value={result.score} className="h-3" indicatorClassName={getScoreColorClass(result.score)} />
 
               <div>
                 <h4 className="font-semibold mb-2">Rationale:</h4>

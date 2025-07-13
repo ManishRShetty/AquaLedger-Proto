@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useContext, useEffect, useState } from "react";
@@ -27,6 +28,7 @@ import {
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 function DetailItem({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | React.ReactNode }) {
     return (
@@ -53,6 +55,19 @@ export default function CatchDetailPage() {
       setCatchData(context.getCatchById(params.id as string));
     }
   }, [context, params.id]);
+  
+  const getScoreColorClass = (score: number) => {
+    if (score >= 75) return "bg-green-500";
+    if (score >= 50) return "bg-yellow-500";
+    return "bg-red-500";
+  };
+
+  const getScoreTextColorClass = (score: number) => {
+    if (score >= 75) return "text-green-500";
+    if (score >= 50) return "text-yellow-500";
+    return "text-red-500";
+  };
+
 
   if (catchData === undefined) {
     return (
@@ -135,14 +150,14 @@ export default function CatchDetailPage() {
                  <Card className="bg-accent/30 border-primary/50">
                     <CardHeader>
                         <CardTitle className="text-xl flex items-center gap-2">
-                            <Leaf className="text-primary"/> Sustainability Analysis
+                            <Leaf className={cn("h-5 w-5", getScoreTextColorClass(catchData.score))}/> Sustainability Analysis
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                          <div>
                             <p className="text-sm text-muted-foreground">Sustainability Score</p>
-                            <p className="text-4xl font-bold text-primary">{catchData.score}<span className="text-2xl text-muted-foreground">/100</span></p>
-                            <Progress value={catchData.score} className="h-2 mt-2 [&>div]:bg-primary" />
+                            <p className={cn("text-4xl font-bold", getScoreTextColorClass(catchData.score))}>{catchData.score}<span className="text-2xl text-muted-foreground">/100</span></p>
+                            <Progress value={catchData.score} className="h-2 mt-2" indicatorClassName={getScoreColorClass(catchData.score)} />
                         </div>
                         <Separator/>
                          <div>
