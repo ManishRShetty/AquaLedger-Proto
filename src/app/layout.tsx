@@ -3,7 +3,7 @@ import './globals.css';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Toaster } from "@/components/ui/toaster"
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
-import { SyncStatus } from '@/components/ui/SyncStatus';
+
 
 export const metadata: Metadata = {
   title: 'AquaLedger',

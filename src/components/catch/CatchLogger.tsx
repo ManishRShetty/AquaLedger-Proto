@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { useVoiceInput } from '@/hooks/useVoiceInput';
 import { ParsedCatch } from '@/lib/catchParser';
 import { db } from '@/lib/db';
+import { calculateLocalScore } from '@/lib/scoring';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, Loader2, Save } from 'lucide-react';
@@ -39,10 +40,14 @@ export function CatchLogger() {
     // Mutation for saving catch
     const logCatchMutation = useMutation({
         mutationFn: async (newCatch: { species: string; weight: number }) => {
+            const { score, rationale } = calculateLocalScore(newCatch.species, newCatch.weight);
+
             await db.catches.add({
                 ...newCatch,
                 timestamp: Date.now(),
-                syncStatus: 'pending' // Default to pending sync
+                syncStatus: 'pending', // Default to pending sync
+                score,
+                rationale
             });
         },
         onSuccess: () => {

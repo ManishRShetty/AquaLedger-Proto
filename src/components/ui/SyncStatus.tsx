@@ -6,7 +6,11 @@ import { Wifi, WifiOff, RefreshCw, AlertCircle } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
 
-export function SyncStatus() {
+interface SyncStatusProps {
+    variant?: 'inline' | 'fixed';
+}
+
+export function SyncStatus({ variant = 'fixed' }: SyncStatusProps) {
     const { isOnline, isSyncing } = useSyncLoop();
 
     // Check for any pending/error items in DB to show amber/red status
@@ -16,6 +20,11 @@ export function SyncStatus() {
         const error = await db.catches.where('syncStatus').equals('error').count();
         return { pending, error };
     }) || { pending: 0, error: 0 };
+
+    // Variant Prop: inline (Navbar) or fixed (Floating)
+    const containerClass = variant === 'fixed'
+        ? "fixed top-4 right-4 z-50 flex items-center gap-2"
+        : "flex items-center gap-2";
 
     const hasPending = statusCounts.pending > 0;
     const hasError = statusCounts.error > 0;
@@ -35,7 +44,7 @@ export function SyncStatus() {
     }
 
     return (
-        <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <div className={containerClass}>
             <AnimatePresence mode='wait'>
                 {state === 'error' && (
                     <motion.div
@@ -46,7 +55,7 @@ export function SyncStatus() {
                         className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/20 border border-red-500/50 backdrop-blur-md text-red-400 text-sm font-medium shadow-lg shadow-red-500/10"
                     >
                         <AlertCircle className="w-4 h-4" />
-                        <span>Sync Failed ({statusCounts.error})</span>
+                        <span className="hidden sm:inline">Sync Failed ({statusCounts.error})</span>
                     </motion.div>
                 )}
 
@@ -59,7 +68,7 @@ export function SyncStatus() {
                         className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/50 backdrop-blur-md text-amber-400 text-sm font-medium shadow-lg shadow-amber-500/10"
                     >
                         <RefreshCw className="w-4 h-4 animate-spin" />
-                        <span>Syncing...</span>
+                        <span className="hidden sm:inline">Syncing...</span>
                     </motion.div>
                 )}
 
@@ -72,7 +81,7 @@ export function SyncStatus() {
                         className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/50 backdrop-blur-md text-amber-400 text-sm font-medium shadow-lg shadow-amber-500/10"
                     >
                         <WifiOff className="w-4 h-4" />
-                        <span>Pending ({statusCounts.pending})</span>
+                        <span className="hidden sm:inline">Pending ({statusCounts.pending})</span>
                     </motion.div>
                 )}
 
@@ -85,11 +94,11 @@ export function SyncStatus() {
                         className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-800/80 border border-white/10 backdrop-blur-md text-zinc-400 text-sm font-medium"
                     >
                         <WifiOff className="w-4 h-4" />
-                        <span>Offline</span>
+                        <span className="hidden sm:inline">Offline</span>
                     </motion.div>
                 )}
 
-                {state === 'synced' && (
+                {state === 'synced' && variant === 'fixed' && (
                     <motion.div
                         key="synced"
                         initial={{ opacity: 0, scale: 0.8 }}
@@ -99,6 +108,19 @@ export function SyncStatus() {
                     >
                         <Wifi className="w-4 h-4" />
                         <span className="hidden sm:inline">All Synced</span>
+                    </motion.div>
+                )}
+
+                {state === 'synced' && variant === 'inline' && (
+                    <motion.div
+                        key="synced-inline"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-emerald-400 text-xs font-medium"
+                    >
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                        <span className="hidden sm:inline text-zinc-400">Online</span>
                     </motion.div>
                 )}
             </AnimatePresence>
