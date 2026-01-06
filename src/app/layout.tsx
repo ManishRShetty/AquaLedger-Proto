@@ -26,7 +26,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           <AppLayout>
             {children}
-            <SyncStatus />
+
             <Toaster />
           </AppLayout>
         </ReactQueryProvider>
