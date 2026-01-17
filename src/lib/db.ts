@@ -8,6 +8,9 @@ export interface Catch {
     syncStatus: 'pending' | 'synced' | 'error';
     score?: number;
     rationale?: string;
+    imageBase64?: string;
+    complianceWarning?: boolean;
+    complianceDetails?: string;
 }
 
 export interface SyncOperation {

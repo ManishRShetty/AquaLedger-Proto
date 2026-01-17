@@ -4,57 +4,68 @@
 
 @layer base {
   :root {
-    --background: 207 89% 94%;
-    --foreground: 220 10% 20%;
-    --card: 207 89% 98%;
-    --card-foreground: 220 10% 20%;
-    --popover: 207 89% 98%;
-    --popover-foreground: 220 10% 20%;
-    --primary: 124 44% 64%;
-    --primary-foreground: 124 44% 10%;
-    --secondary: 207 88% 85%;
-    --secondary-foreground: 220 10% 25%;
-    --muted: 207 88% 90%;
-    --muted-foreground: 220 10% 45%;
-    --accent: 207 88% 71%;
-    --accent-foreground: 220 10% 15%;
+    /* Backgrounds: Subtle off-white for page, pure white for cards */
+    --background: 210 40% 98%; /* #F8FAFC (Slate 50) */
+    --foreground: 222 47% 11%; /* #0F172A (Slate 900) */
+
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary: Using a middle ground from the gradient for solid fallbacks */
+    --primary: 199 89% 48%; /* ~ nebular blue */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%; /* #64748B (Slate 500) */
+
+    --accent: 180 76% 50%; /* Teal-ish accent */
+    --accent-foreground: 222 47% 11%;
+
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 207 89% 85%;
-    --input: 207 89% 90%;
-    --ring: 124 44% 64%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Borders: Ultra-thin subtle slate */
+    --border: 214.3 31.8% 91.4%; /* #E2E8F0 */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 199 89% 48%;
+
+    --radius: 1rem; /* Rounded-2xl default (16px) */
+    
+    /* Charts - kept but adjusted slightly if needed */
+    --chart-1: 173 58% 39%;
+    --chart-2: 199 89% 48%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
   }
+
+  /* Compel light mode even if system is dark */
   .dark {
-    --background: 220 10% 10%;
-    --foreground: 207 89% 94%;
-    --card: 220 10% 12%;
-    --card-foreground: 207 89% 94%;
-    --popover: 220 10% 12%;
-    --popover-foreground: 207 89% 94%;
-    --primary: 124 44% 64%;
-    --primary-foreground: 124 44% 10%;
-    --secondary: 207 88% 20%;
-    --secondary-foreground: 207 89% 94%;
-    --muted: 207 88% 20%;
-    --muted-foreground: 207 89% 75%;
-    --accent: 207 88% 71%;
-    --accent-foreground: 207 89% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 207 88% 25%;
-    --input: 207 88% 25%;
-    --ring: 124 44% 64%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 180 76% 50%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 199 89% 48%;
   }
 }
 
@@ -63,6 +74,34 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground tracking-tight;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  /* Apple-style diffused shadow */
+  .shadow-apple {
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.04);
+  }
+  
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+  
+  /* Primary Gradient Text */
+  .text-gradient-brand {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-sky-500;
+  }
+  
+  /* Primary Gradient Background */
+  .bg-gradient-brand {
+    @apply bg-gradient-to-r from-teal-400 to-sky-500;
   }
 }
